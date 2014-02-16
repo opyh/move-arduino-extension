@@ -7,8 +7,6 @@ static unsigned char i2c_buffer[BUFFER_SIZE];
 void setup()
 {
   delay(3000);
-  Serial.begin(115200);
-  Serial.print("TEST.");
   WireSpecialEdition.begin(0x50);
   WireSpecialEdition.onReceive(readFromMaster);
   WireSpecialEdition.onRequest(transmitToMaster);
