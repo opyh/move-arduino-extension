@@ -1,4 +1,4 @@
-#include "Wire.h"
+#include "Wire_new.h"
 
 #define BUFFER_SIZE 8
 static volatile unsigned char lastInstruction = 0xff;
@@ -6,9 +6,9 @@ static unsigned char i2c_buffer[BUFFER_SIZE];
 
 void setup()
 {
-  Wire.begin(0x50);
-  Wire.onReceive(readFromMaster);
-  Wire.onRequest(transmitToMaster);
+  WireSpecialEdition.begin(0x50);
+  WireSpecialEdition.onReceive(readFromMaster);
+  WireSpecialEdition.onRequest(transmitToMaster);
 }
 
 
@@ -36,13 +36,13 @@ void writeInitializationSequence() {
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     };
-    Wire.write(initializationData, 256);
+    WireSpecialEdition.write(initializationData, 256);
 }
 
 
 void readFromMaster(int numBytes)
 {
-  lastInstruction = Wire.read();
+  lastInstruction = WireSpecialEdition.read();
 }
 
 
@@ -50,11 +50,11 @@ void transmitToMaster()
 {
   switch (lastInstruction) {
     case 0: writeInitializationSequence(); break;
-    case 2: Wire.write((uint8_t) 0); break;
-    case 3: Wire.write((uint8_t) 0); break;
-    case 4: Wire.write((uint8_t) 0); break;
-    case 5: Wire.write((uint8_t) 0); break;
-    case 6: Wire.write((uint8_t) 0x10); break;
-    case 7: Wire.write((uint8_t) 0); break;
+    case 2: WireSpecialEdition.write((uint8_t) 0); break;
+    case 3: WireSpecialEdition.write((uint8_t) 0); break;
+    case 4: WireSpecialEdition.write((uint8_t) 0); break;
+    case 5: WireSpecialEdition.write((uint8_t) 0); break;
+    case 6: WireSpecialEdition.write((uint8_t) 0x10); break;
+    case 7: WireSpecialEdition.write((uint8_t) 0); break;
   }
 }
