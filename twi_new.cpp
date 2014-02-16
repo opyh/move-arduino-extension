@@ -327,7 +327,7 @@ void twi_releaseBus(void)
 
 SIGNAL(TWI_vect)
 {
-  //Serial.print(TW_STATUS);
+  Serial.print(TW_STATUS);
   switch(TW_STATUS){
     // All Master
     case TW_START:     // sent start condition
