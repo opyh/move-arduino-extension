@@ -24,6 +24,7 @@
 #include <avr/interrupt.h>
 #include "compat/twi.h"
 #include "Arduino.h" // for digitalWrite
+#include "HardwareSerial.h"
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -326,6 +327,7 @@ void twi_releaseBus(void)
 
 SIGNAL(TWI_vect)
 {
+  //Serial.print(TW_STATUS);
   switch(TW_STATUS){
     // All Master
     case TW_START:     // sent start condition
@@ -464,7 +466,6 @@ SIGNAL(TWI_vect)
       break;
     case TW_BUS_ERROR: // bus error, illegal stop/start
       twi_error = TW_BUS_ERROR;
-      twi_stop();
       break;
   }
 }
