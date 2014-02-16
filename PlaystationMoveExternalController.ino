@@ -51,13 +51,16 @@ void readFromMaster(int numBytes)
 
 void transmitToMaster()
 {
-  switch (lastInstruction) {
-    case 0: writeInitializationSequence(); break;
-    case 2: WireSpecialEdition.write((uint8_t) 0); break;
-    case 3: WireSpecialEdition.write((uint8_t) 0); break;
-    case 4: WireSpecialEdition.write((uint8_t) 0); break;
-    case 5: WireSpecialEdition.write((uint8_t) 0); break;
-    case 6: WireSpecialEdition.write((uint8_t) 0x10); break;
-    case 7: WireSpecialEdition.write((uint8_t) 0); break;
-  }
+  PORTD = 0xfd;
+  writeInitializationSequence();
+  PORTD = 0xfc;
+//  switch (lastInstruction) {
+//    case 0: writeInitializationSequence(); break;
+//    case 2: WireSpecialEdition.write((uint8_t) 0); break;
+//    case 3: WireSpecialEdition.write((uint8_t) 0); break;
+//    case 4: WireSpecialEdition.write((uint8_t) 0); break;
+//    case 5: WireSpecialEdition.write((uint8_t) 0); break;
+//    case 6: WireSpecialEdition.write((uint8_t) 0x10); break;
+//    case 7: WireSpecialEdition.write((uint8_t) 0); break;
+//  }
 }

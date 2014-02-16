@@ -387,6 +387,7 @@ SIGNAL(TWI_vect)
     case TW_SR_GCALL_ACK: // addressed generally, returned ack
     case TW_SR_ARB_LOST_SLA_ACK:   // lost arbitration, returned ack
     case TW_SR_ARB_LOST_GCALL_ACK: // lost arbitration, returned ack
+
       // enter slave receiver mode
       twi_state = TWI_SRX;
       // indicate that rx buffer can be overwritten and ack
@@ -410,14 +411,32 @@ SIGNAL(TWI_vect)
       if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
         twi_rxBuffer[twi_rxBufferIndex] = '\0';
       }
+
       // sends ack and stops interface for clock stretching
-      twi_stop();
+//      TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT) | _BV(TWSTO);
+
+      // wait for stop condition to be exectued on bus
+      // TWINT is not set after a stop condition!
+//      while(TWCR & _BV(TWSTO)){
+//        PORTD ^= 0x01;
+//        continue;
+//      }
+
+      // update twi state
+      twi_state = TWI_READY;
+      
       // callback to user defined callback
-      twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
+//      twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
+            
       // since we submit rx buffer to "wire" library, we can reset it
       twi_rxBufferIndex = 0;
+      PORTD = 0xfe;
+      
       // ack future responses and leave slave receiver state
       twi_releaseBus();
+      
+      PORTD = 0xff;
+       
       break;
     case TW_SR_DATA_NACK:       // data received, returned nack
     case TW_SR_GCALL_DATA_NACK: // data received generally, returned nack
