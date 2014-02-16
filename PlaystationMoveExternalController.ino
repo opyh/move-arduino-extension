@@ -10,6 +10,8 @@ void setup()
   WireSpecialEdition.begin(0x50);
   WireSpecialEdition.onReceive(readFromMaster);
   WireSpecialEdition.onRequest(transmitToMaster);
+  DDRD = 0xff;
+  PORTD = 0x00;
 }
 
 

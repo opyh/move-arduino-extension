@@ -325,7 +325,9 @@ void twi_releaseBus(void)
 }
 
 SIGNAL(TWI_vect)
-{
+{  
+  PORTD = TW_STATUS;
+  
   switch(TW_STATUS){
     // All Master
     case TW_START:     // sent start condition
